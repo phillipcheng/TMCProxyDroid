@@ -1,0 +1,31 @@
+redsocks.conf:
+redsocks {
+ local_ip = 127.0.0.1;
+ local_port = 8123;
+ ip = 52.1.96.115;
+ port = 8080;
+ type = http-relay;
+}
+redsocks {
+ local_ip = 127.0.0.1;
+ local_port = 8124;
+ ip = 52.1.96.115;
+ port = 8080;
+ type = http-connect;
+}
+
+
+/data/data/org.proxydroid/proxy.sh start http 52.1.96.115 8080 false "" ""
+
+start:
+/system/bin/iptables -t nat -A OUTPUT -p tcp -d 52.1.96.115 -j RETURN
+/system/bin/iptables -t nat -A OUTPUT -p tcp --dport 80 -j DNAT --to-destination 127.0.0.1:8123
+/system/bin/iptables -t nat -A OUTPUT -p tcp --dport 443 -j DNAT --to-destination 127.0.0.1:8124
+/system/bin/iptables -t nat -A OUTPUT -p tcp --dport 5228 -j DNAT --to-destination 127.0.0.1:8124
+
+iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 52.1.96.115:8080
+iptables -t nat -A PREROUTING -p tcp --dport 443 -j DNAT --to-destination 52.1.96.115:8080
+
+
+stop:
+/data/data/org.proxydroid/iptables -t nat -F OUTPUT
