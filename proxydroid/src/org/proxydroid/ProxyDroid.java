@@ -403,7 +403,7 @@ public class ProxyDroid extends SherlockPreferenceActivity
 
       bundle.putInt("port", mProfile.getPort());
       bundle.putString("tenantId", mProfile.getTenantId());
-      bundle.putString("userName", mProfile.getUser());
+      bundle.putString("userName", mProfile.getUserName());
 
       it.putExtras(bundle);
       startService(it);
