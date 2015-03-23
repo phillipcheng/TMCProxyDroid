@@ -20,6 +20,7 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include <event.h>
+#include <android/log.h>
 #include "utils.h"
 #include "log.h"
 
@@ -36,6 +37,9 @@ static void fprint_timestamp(
 
 	/* XXX: there is no error-checking, IMHO it's better to lose messages
 	 *      then to die and stop service */
+	#ifdef ANDROID
+	__android_log_print(ANDROID_LOG_INFO, "redsocks", "%lu.%6.6lu %s:%u %s(...) %s: %s\n", tv.tv_sec, tv.tv_usec, file, line, func, message, appendix);
+	#endif
 	if (appendix)
 		fprintf(fd, "%lu.%6.6lu %s:%u %s(...) %s: %s\n", tv.tv_sec, tv.tv_usec, file, line, func, message, appendix);
 	else
