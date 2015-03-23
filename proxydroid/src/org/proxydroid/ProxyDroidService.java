@@ -51,7 +51,9 @@ public class ProxyDroidService extends Service {
   private static final int MSG_CONNECT_PAC_ERROR = 4;
   private static final int MSG_CONNECT_RESOLVE_ERROR = 5;
 
-  final static String CMD_IPTABLES_RETURN = "iptables -t nat -A OUTPUT -p tcp -d 0.0.0.0 -j RETURN\n";
+  final static String CMD_IPTABLES_RETURN_ADD = "iptables -t nat -A OUTPUT -p tcp -d 0.0.0.0 -j RETURN\n";
+  
+  final static String CMD_IPTABLES_RETURN_REMOVE="iptables -t nat -D OUTPUT -p tcp -d 0.0.0.0 -j RETURN\n";
 
   final static String CMD_IPTABLES_REDIRECT_ADD_HTTP = 
 		  "iptables -t nat -N REDSOCKS\n" 
@@ -297,12 +299,12 @@ public class ProxyDroidService extends Service {
 
       }
 
-      cmd.append(CMD_IPTABLES_RETURN.replace("0.0.0.0", host));
+      cmd.append(CMD_IPTABLES_RETURN_ADD.replace("0.0.0.0", host));
 
       if (bypassAddrs != null && !bypassAddrs.equals("")) {
         String[] addrs = Profile.decodeAddrs(bypassAddrs);
         for (String addr : addrs)
-          cmd.append(CMD_IPTABLES_RETURN.replace("0.0.0.0", addr));
+          cmd.append(CMD_IPTABLES_RETURN_ADD.replace("0.0.0.0", addr));
       }
 
       String redirectCmd = CMD_IPTABLES_REDIRECT_ADD_HTTP;
@@ -323,7 +325,7 @@ public class ProxyDroidService extends Service {
 
         for (ProxyedApp app : apps) {
           if (app != null && app.isProxyed()) {
-            cmd.append(CMD_IPTABLES_RETURN.replace("-d 0.0.0.0", "").replace("-t nat",
+            cmd.append(CMD_IPTABLES_RETURN_ADD.replace("-d 0.0.0.0", "").replace("-t nat",
                 "-t nat -m owner --uid-owner " + app.getUid()));
           }
         }
@@ -512,6 +514,7 @@ public class ProxyDroidService extends Service {
 
     final StringBuilder sb = new StringBuilder();
 
+    sb.append(CMD_IPTABLES_RETURN_REMOVE.replace("0.0.0.0", host));
     //sb.append(Utils.getIptables()).append(" -t nat -F OUTPUT\n");
     sb.append(CMD_IPTABLES_REDIRECT_REMOVE_HTTP);
 
