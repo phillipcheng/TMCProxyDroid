@@ -47,6 +47,7 @@ REDSOCKS_SOURCES := base.c dnstc.c http-connect.c \
 
 LOCAL_STATIC_LIBRARIES := libevent
 
+LOCAL_LDLIBS := -llog
 LOCAL_MODULE := redsocks
 LOCAL_SRC_FILES := $(addprefix redsocks/, $(REDSOCKS_SOURCES))
 LOCAL_CFLAGS := -O2 -std=gnu99 -g -I$(LOCAL_PATH)/redsocks \
