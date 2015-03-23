@@ -18,9 +18,9 @@
     <CheckBoxPreference android:defaultValue="false" android:key="isPAC" android:summary="@string/pac_summary" android:title="@string/pac">
     </CheckBoxPreference>
 
-    <EditTextPreference android:key="host" android:summary="@string/host_summary" android:title="@string/host">
+    <EditTextPreference android:key="host" android:summary="@string/host_summary" android:title="@string/host" android:defaultValue="www.doxings.com">
     </EditTextPreference>
-    <EditTextPreference android:defaultValue="3128" android:key="port" android:summary="@string/port_summary" android:title="@string/port">
+    <EditTextPreference android:defaultValue="8080" android:key="port" android:summary="@string/port_summary" android:title="@string/port">
     </EditTextPreference><EditTextPreference android:defaultValue="1" android:key="tenantId" android:title="@string/tenantId" /><EditTextPreference android:key="userName" android:title="@string/userName" android:defaultValue="1234" />
 
     <ListPreference android:defaultValue="http" android:entries="@array/proxy_type_entry" android:entryValues="@array/proxy_type_value" android:key="proxyType" android:title="@string/proxy_type">
